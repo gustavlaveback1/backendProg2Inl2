@@ -15,8 +15,7 @@ public class Customer {
 
     private String phoneNumber;
 
-    @OneToMany(mappedBy = "customer",
-            cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
     private List<Vehicle> vehicles = new ArrayList<>();
 
     public Customer() {
