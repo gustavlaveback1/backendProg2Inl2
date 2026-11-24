@@ -3,9 +3,11 @@ package com.example.carshop.controller;
 import com.example.carshop.entity.Customer;
 import com.example.carshop.entity.Vehicle;
 import com.example.carshop.dto.CustomerDTO;
+import com.example.carshop.dto.VehicleBrandDTO;
 import com.example.carshop.dto.VehicleDTO;
 import com.example.carshop.repository.CustomerRepository;
 import com.example.carshop.repository.VehicleRepository;
+import com.example.carshop.projection.VehicleBrandProjection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -45,6 +47,14 @@ public class CarShopController {
                 customer.getName(),
                 customer.getPhoneNumber(),
                 vehicles);
+    }
+
+    private VehicleBrandDTO convertToVehicleBrandDTO(
+            VehicleBrandProjection projection) {
+
+        return new VehicleBrandDTO(
+                projection.getRegistrationNumber(),
+                projection.getBrand());
     }
 
     @PostMapping("/customers")
@@ -154,4 +164,14 @@ public class CarShopController {
 
         return ResponseEntity.ok("Vehicle brand updated successfully");
     }
+
+    @GetMapping("/vehicle-brand-info")
+    public List<VehicleBrandDTO> getVehicleBrandInfo() {
+
+        return vehicleRepository.findVehicleBrandInfo()
+                .stream()
+                .map(this::convertToVehicleBrandDTO)
+                .collect(Collectors.toList());
+    }
+
 }
